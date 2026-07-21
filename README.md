@@ -46,7 +46,7 @@ Each is packaged in your harness's native format and invoked its own way (e.g. `
 2. Launch your AI agent from that folder.
 3. Ask it to follow `second-brain-initialisation.md`, and answer its questions as it guides you through each stage.
 
-> Launch future sessions from the Second Brain root so the root `AGENTS.md` is reliably discovered.
+> Launch future sessions from the Second Brain root so your harness's instructions file (`AGENTS.md` / `CLAUDE.md` / `GEMINI.md`) is reliably discovered.
 
 ## Design principles
 
