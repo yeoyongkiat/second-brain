@@ -1,8 +1,10 @@
 # Second Brain Initialisation
 
-## Instructions for Codex
+## Instructions for the agent
 
-You are setting up an interactive, Obsidian-compatible Second Brain and AI agent environment in the folder from which the user launched Codex. The user should have installed Obsidian, the `Terminal` community plugin, as well as the Codex CLI tool.
+You are setting up an interactive, Obsidian-compatible Second Brain and AI agent environment in the folder from which the user launched you. The user should have installed Obsidian, the `Terminal` community plugin, and an AI coding agent (for example Codex, Claude Code, Gemini CLI, or OpenCode).
+
+This document describes *what* to build, not the exact files and formats to use. Wherever a step involves a mechanism that differs between agent harnesses — the auto-loaded instructions file, or how user-invokable capabilities ("skills" / custom commands) are packaged — translate the intent into your own harness's native conventions rather than copying a fixed layout. You know your harness better than this document can. Concrete names such as `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `$update`, or `/update` appear only as illustrative hints.
 
 This is an onboarding conversation, not a silent installation. Guide the user one stage at a time, explain what you are about to do, and wait for the user's answer whenever a choice or confirmation is required. Ask manageable questions rather than presenting a long questionnaire.
 
@@ -89,7 +91,7 @@ With the default choices, the initial structure is:
 
 ```text
 Second Brain/
-├── AGENTS.md
+├── AGENTS.md            # or your harness's equivalent auto-loaded file (CLAUDE.md, GEMINI.md, …)
 ├── SOUL.md
 ├── USER.md
 ├── INDEX.md
@@ -105,11 +107,13 @@ Second Brain/
 
 Adapt this structure if the user chose different folders.
 
-## Stage 6: Create `AGENTS.md`
+## Stage 6: Create the harness instructions file
 
-Explain that Codex automatically discovers applicable `AGENTS.md` files when a session starts. Other Second Brain files are not automatically loaded merely because they exist, so `AGENTS.md` will tell Codex what startup context to read and how to navigate the vault.
+Identify the project-level instructions file that your harness automatically loads at the start of every session — for example `AGENTS.md` for Codex and OpenCode, `CLAUDE.md` for Claude Code, or `GEMINI.md` for Gemini CLI. If your harness has no such auto-loaded file, create `AGENTS.md` in the Second Brain root as a conventional fallback and tell the user how your harness discovers startup context.
 
-Create a concise root `AGENTS.md` containing, at minimum, the following operating rules in language adapted to the user's chosen names and folders:
+Explain to the user which file you are using and that your harness loads it automatically at session start. Other Second Brain files are not automatically loaded merely because they exist, so this file will tell you what startup context to read and how to navigate the vault.
+
+Create or update that file so it contains, at minimum, the following operating rules in language adapted to the user's chosen names and folders:
 
 ### Startup context
 
@@ -133,48 +137,48 @@ If later stages create `BRAIN.md` or `TODO.md`, add them to this startup list as
 - Save sensitive information only when the user explicitly wants it recorded.
 - Work only inside the selected Second Brain folder unless the user explicitly authorises a broader scope.
 
-Tell the user to launch future Codex sessions from the Second Brain root so that the root `AGENTS.md` is reliably discovered.
+Tell the user to launch future agent sessions from the Second Brain root so that this instructions file is reliably discovered.
 
-## Stage 7: Create the `$update` skill
+## Stage 7: Create the `update` capability
 
 Tell the user:
 
 > Your Second Brain's core structure is ready.
 >
-> Next, I'll create an `$update` skill. Run `$update` whenever you feel the contents or structure of your Second Brain have changed significantly—for example, after adding, moving, renaming, or deleting files and folders.
+> Next, I'll create an `update` capability. Run it (for example `$update` or `/update`, depending on your agent) whenever you feel the contents or structure of your Second Brain have changed significantly—for example, after adding, moving, renaming, or deleting files and folders.
 >
-> It will refresh `AGENTS.md`, the root `INDEX.md`, and all folder-level `INDEX.md` files. It will preserve your notes and documents and will not rewrite `SOUL.md`, `USER.md`, or ordinary content files unless you explicitly ask it to.
+> It will refresh the harness instructions file, the root `INDEX.md`, and all folder-level `INDEX.md` files. It will preserve your notes and documents and will not rewrite `SOUL.md`, `USER.md`, or ordinary content files unless you explicitly ask it to.
 
-Create a repository-scoped Codex skill at `.agents/skills/update/SKILL.md`. Give it valid YAML frontmatter with the name `update` and a clear description that triggers when the user asks to refresh or reconcile the Second Brain's indexes and operating map.
+Package this as a user-invokable capability named `update`, using your harness's native mechanism for on-demand capabilities — a skill, a custom slash-command, or the closest equivalent (for example a skill at `.agents/skills/update/SKILL.md` or `.claude/skills/update/SKILL.md`, or a custom command). Give it whatever metadata/frontmatter your harness requires and a clear description that triggers when the user asks to refresh or reconcile the Second Brain's indexes and operating map. If your harness offers no such mechanism, save this procedure as a vault document and tell the user they can run it by asking you to update the Second Brain.
 
-The skill must instruct Codex to:
+The capability must instruct you to:
 
-1. Read `AGENTS.md`, `SOUL.md`, `USER.md`, and the root `INDEX.md`.
+1. Read the harness instructions file, `SOUL.md`, `USER.md`, and the root `INDEX.md`.
 2. Inspect the current folder and file structure, excluding hidden system metadata and irrelevant generated files.
 3. Read the existing nested `INDEX.md` files.
 4. Identify additions, removals, moves, renames, and inaccurate descriptions.
 5. Update only affected indexes.
-6. Update `AGENTS.md` only when the system's structure or operating rules have genuinely changed.
+6. Update the harness instructions file only when the system's structure or operating rules have genuinely changed.
 7. Keep descriptions concise and factual.
 8. Inspect a file when its purpose is unclear; do not infer its purpose from its filename alone. Ask the user if uncertainty remains.
 9. Preserve `SOUL.md`, `USER.md`, `BRAIN.md`, `TODO.md`, generated `SUMMARY.md` files, `.summary-manifest.json` files, and ordinary content unless the user explicitly requests changes to them.
 10. Report which files changed and briefly summarise the updates.
 
-Validate that Codex can discover the new skill. If it does not appear immediately, tell the user that restarting Codex may be necessary.
+Validate that your harness can discover the new capability. If it does not appear immediately, tell the user that restarting the agent may be necessary.
 
-## Stage 8: Create the `$summarise` skill
+## Stage 8: Create the `summarise` capability
 
 Tell the user:
 
-> I'll also create a `$summarise` skill. Point it at a folder and it will recursively read the documents in that folder and its subfolders, then create or refresh a context-sensitive `SUMMARY.md` at the root of the selected folder.
+> I'll also create a `summarise` capability. Point it at a folder and it will recursively read the documents in that folder and its subfolders, then create or refresh a context-sensitive `SUMMARY.md` at the root of the selected folder.
 >
 > The summary will adapt to the material. A person's folder may produce a sourced profile; a meetings folder may produce a brief covering purpose, developments, decisions, actions, and workstreams. It will also act as an Obsidian-compatible wiki, grouping important themes and linking back to the source notes.
 >
 > Later runs will detect what was added, edited, moved, or removed and reconcile the summary without needlessly rereading unchanged files.
 
-Create a repository-scoped Codex skill at `.agents/skills/summarise/SKILL.md`. Use the skill-creator workflow to initialise it, give it valid YAML frontmatter with the name `summarise`, create accurate `agents/openai.yaml` metadata, and validate it with the skill validator. Its description must trigger when the user asks to summarise, synthesise, aggregate, or refresh knowledge from a specified folder.
+Package this as a user-invokable capability named `summarise`, using your harness's native mechanism for on-demand capabilities — a skill, a custom slash-command, or the closest equivalent (for example a skill at `.agents/skills/summarise/SKILL.md` or `.claude/skills/summarise/SKILL.md`). If your harness provides a skill-creation or scaffolding workflow, use it, and validate the result with whatever validator your harness offers. Give the capability whatever metadata/frontmatter your harness requires, and a description that triggers when the user asks to summarise, synthesise, aggregate, or refresh knowledge from a specified folder. If your harness offers no such mechanism, save this procedure as a vault document and tell the user how to invoke it by asking.
 
-The skill must instruct Codex to:
+The capability must instruct you to:
 
 1. Require a specific target folder. Resolve it inside the Second Brain root and ask the user when the target is missing or ambiguous.
 2. Work only inside that target folder. Never follow symlinks or links outside it.
@@ -197,102 +201,96 @@ The skill must instruct Codex to:
 
 Use relative paths in the manifest and deterministic ordering to keep diffs stable. Do not place content hashes or maintenance logs in the reader-facing `SUMMARY.md`; the separate manifest is the efficient ingestion record. Treat the manifest as generated state and preserve it during ordinary note maintenance.
 
-Give examples:
+Give examples (using whatever invocation your harness uses, for example `$summarise` or `/summarise`):
 
 ```text
-$summarise people/Sarah
+summarise people/Sarah
 ```
 
 ```text
-$summarise meetings/weekly-programme-review
+summarise meetings/weekly-programme-review
 ```
 
-Validate that Codex can discover `$summarise`. If it does not appear immediately, tell the user that restarting Codex from the Second Brain root may be necessary.
+Validate that your harness can discover the `summarise` capability. If it does not appear immediately, tell the user that restarting the agent from the Second Brain root may be necessary.
 
-## Stage 9: Create the `$reset` skill
+## Stage 9: Create the `reset` capability
 
 Tell the user:
 
-> I'll create a `$reset` skill for a factory reset of this Second Brain.
+> I'll create a `reset` capability for a factory reset of this Second Brain.
 >
-> This is deliberately destructive. When run, it removes everything inside the vault—including notes, indexes, configuration, generated summaries, and repository-scoped custom skills—except `setting-up-a-second-brain.md`. It will always show you the exact vault and deletion scope and require fresh confirmation before proceeding.
+> This is deliberately destructive. When run, it removes everything inside the vault—including notes, indexes, configuration, generated summaries, and vault-scoped custom capabilities—except `second-brain-initialisation.md`. It will always show you the exact vault and deletion scope and require fresh confirmation before proceeding.
 >
 > It will not delete personal or system-wide skills stored outside this vault.
 
-Create a repository-scoped Codex skill at `.agents/skills/reset/SKILL.md`. Use the skill-creator workflow to initialise it, give it valid YAML frontmatter with the name `reset`, create accurate `agents/openai.yaml` metadata, and validate it with the skill validator. Its description must clearly trigger only when the user asks to factory-reset, erase, or reinitialise the current Second Brain vault. Do not make the skill implicitly attractive for ordinary cleanup.
+Package this as a user-invokable capability named `reset`, using your harness's native mechanism (a skill, custom command, or equivalent; for example a skill at `.agents/skills/reset/SKILL.md` or `.claude/skills/reset/SKILL.md`). If your harness provides a scaffolding workflow and validator, use them. Give it whatever metadata/frontmatter your harness requires, and a description that clearly triggers only when the user asks to factory-reset, erase, or reinitialise the current Second Brain vault. Do not make it implicitly attractive for ordinary cleanup.
 
-The skill must instruct Codex to:
+The capability must instruct you to:
 
 1. Treat invocation as a request to prepare a reset, not as confirmation to delete.
-2. Resolve the canonical absolute path of the Second Brain root containing both the applicable root `AGENTS.md` and `setting-up-a-second-brain.md`. Never accept `/`, the user's home directory, `$HOME`, `~`, an unresolved environment variable, a glob, the current directory by assumption alone, or any path outside the active Second Brain as the reset target.
-3. Verify that `setting-up-a-second-brain.md` is a regular file inside that exact root and is not a symlink. Stop if the vault root or preserved file cannot be established unambiguously.
-4. Build a read-only inventory of every immediate child of the vault root, including hidden entries. The only preserved entry is the exact root file `setting-up-a-second-brain.md`. Everything else is in scope, including `.obsidian/`, `AGENTS.md`, `SOUL.md`, `USER.md`, `INDEX.md`, `TODO.md`, `BRAIN.md`, all note folders, summaries, manifests, and `.agents/skills/` containing `$reset` and other repository-scoped custom skills.
+2. Resolve the canonical absolute path of the Second Brain root containing both the applicable root harness instructions file and `second-brain-initialisation.md`. Never accept `/`, the user's home directory, `$HOME`, `~`, an unresolved environment variable, a glob, the current directory by assumption alone, or any path outside the active Second Brain as the reset target.
+3. Verify that `second-brain-initialisation.md` is a regular file inside that exact root and is not a symlink. Stop if the vault root or preserved file cannot be established unambiguously.
+4. Build a read-only inventory of every immediate child of the vault root, including hidden entries. The only preserved entry is the exact root file `second-brain-initialisation.md`. Everything else is in scope, including `.obsidian/`, the harness instructions file, `SOUL.md`, `USER.md`, `INDEX.md`, `TODO.md`, `BRAIN.md`, all note folders, summaries, manifests, and any harness skill/command directory containing `reset` and other vault-scoped custom capabilities.
 5. Do not follow symlinks. List a symlink itself for removal, never its target. Do not cross filesystem boundaries while resolving deletion targets.
 6. Present the user with:
    - The canonical absolute vault path.
    - The exact file that will be preserved.
-   - A concise inventory of entries to be removed, including hidden entries and repository-scoped skills.
-   - A clear warning that the operation removes the agent profile, user profile, notes, tasks, configuration, indexes, generated summaries, and all custom skills stored inside the vault.
+   - A concise inventory of entries to be removed, including hidden entries and vault-scoped capabilities.
+   - A clear warning that the operation removes the agent profile, user profile, notes, tasks, configuration, indexes, generated summaries, and all custom capabilities stored inside the vault.
    - Whether the proposed removal method is recoverable through the operating system's Trash or Recycle Bin.
 7. Require a fresh, explicit confirmation after showing that inventory. Ask the user to type `RESET <canonical-vault-path>`. A previous request to reset, a generic "yes", skill selection, or confirmation given before the inventory does not count. If the phrase or path does not match exactly, do nothing.
 8. After confirmation, recompute the immediate-child inventory and compare it with the preview. If new entries appeared or the preserved file changed identity, stop and request confirmation again with an updated inventory.
 9. Prefer moving each in-scope immediate child to the operating system's Trash or Recycle Bin using explicit resolved paths, preserving recoverability when supported. Never use a broad recursive command against the vault root, home directory, or a variable. If recoverable removal is unavailable, explain that permanent deletion would be required and obtain a second explicit confirmation before doing it.
-10. Remove every confirmed immediate child except `setting-up-a-second-brain.md`. Because `.agents/skills/reset/` is itself removed, finish the active in-memory workflow without attempting to read the deleted skill again.
-11. Verify that the vault root still exists and contains exactly one entry: the regular file `setting-up-a-second-brain.md`. If anything else remains or the preserved file is missing, report the discrepancy accurately and do not claim success.
-12. Report what was removed, whether it is recoverable, and that repository-scoped custom skills were removed. Tell the user they can run `setting-up-a-second-brain.md` again to reinitialise the vault. Do not automatically begin onboarding unless the user asks.
+10. Remove every confirmed immediate child except `second-brain-initialisation.md`. Because the `reset` capability's own directory is itself removed, finish the active in-memory workflow without attempting to read the deleted capability again.
+11. Verify that the vault root still exists and contains exactly one entry: the regular file `second-brain-initialisation.md`. If anything else remains or the preserved file is missing, report the discrepancy accurately and do not claim success.
+12. Report what was removed, whether it is recoverable, and that vault-scoped custom capabilities were removed. Tell the user they can run `second-brain-initialisation.md` again to reinitialise the vault. Do not automatically begin onboarding unless the user asks.
 
 The reset must remain confined to the selected vault. Never remove global or personal skills, plugins, connectors, credentials, or configuration stored outside it, even if the user previously used them with this Second Brain.
 
 Give an example:
 
 ```text
-$reset factory-reset this Second Brain
+reset factory-reset this Second Brain
 ```
 
-Do not test the skill by performing a real reset during onboarding. Validate its structure and discovery only. If it does not appear immediately, tell the user that restarting Codex from the Second Brain root may be necessary.
+Do not test the capability by performing a real reset during onboarding. Validate its structure and discovery only. If it does not appear immediately, tell the user that restarting the agent from the Second Brain root may be necessary.
 
-## Stage 10: Explain how Codex skills work
+## Stage 10: Explain how skills work
 
-Tell the user:
+Adapt this explanation to how your harness actually exposes user-invokable capabilities, then tell the user in your own words:
 
-> Codex skills are reusable workflows for specialised tasks. To use one, type `$` in the prompt box. Codex will show the skills currently available to you. Select a skill, then describe what you want it to do.
+> Skills (or custom commands) are reusable workflows for specialised tasks. Explain to the user how to invoke and browse them in this harness — for example typing `$` in Codex or `/` in Claude Code and Gemini CLI to list what is available, then selecting one and describing what you want it to do.
 >
 > For example:
 >
 > ```text
-> $update refresh the indexes for my Second Brain
+> update refresh the indexes for my Second Brain
 > ```
 >
-> Some particularly useful skills include:
+> Your harness may also ship built-in capabilities — for creating presentations, reading and editing PDFs, working with spreadsheets, browsing websites, or generating images. Tell the user which of these actually exist in their environment rather than promising a fixed list. Alongside those, they now have:
 >
-> - `$presentations` — create and edit presentation decks.
-> - `$pdf` — read, create, edit, or analyse PDF documents.
-> - `$spreadsheets` — create, edit, analyse, and verify spreadsheet files.
-> - `$chrome` — work with websites through Chrome.
-> - `$imagegen` — generate or edit images.
-> - `$summarise` — create or incrementally refresh a folder-level knowledge summary.
-> - `$reset` — factory-reset this vault after a separate destructive-action confirmation.
+> - `update` — refresh the harness instructions file and all indexes.
+> - `summarise` — create or incrementally refresh a folder-level knowledge summary.
+> - `reset` — factory-reset this vault after a separate destructive-action confirmation.
 >
-> Only installed and available skills will appear. If one of these is unavailable, I can help you find or install an appropriate skill.
->
-> You do not need to memorise every skill. Type `$` whenever you want to browse the skills available in your current Codex environment.
+> Only installed and available capabilities will appear. If one the user wants is unavailable, offer to help find or install an appropriate one.
 
-Invite the user to type `$` and confirm that `$update`, `$summarise`, and `$reset` appear. Do not require them to run any of these skills yet.
+Invite the user to browse their capabilities using their harness's mechanism and confirm that `update`, `summarise`, and `reset` appear. Do not require them to run any of these yet.
 
 ### Explain scheduled tasks
 
 After explaining skills, tell the user:
 
-> You can also schedule tasks to run automatically on your computer. For example, you could schedule a weekly `$update`, generate a morning deadline briefing, perform recurring research, or run another stable workflow at a chosen time.
+> You may also be able to schedule tasks to run automatically. For example, you could schedule a weekly `update`, generate a morning deadline briefing, perform recurring research, or run another stable workflow at a chosen time.
 >
-> Scheduled tasks that work with files in this Second Brain are managed through the ChatGPT desktop app rather than the Codex CLI. Your computer must be powered on, the desktop app must be running, and this folder must remain available when the task is due. I can help you prepare and test the task's prompt or skill here before you schedule it.
+> Whether and how scheduling works depends on your agent and environment — some harnesses schedule from a companion desktop app, others from the CLI or the operating system's scheduler. For any file-based schedule, the computer must be powered on and this folder available when the task is due. I can help you prepare and test the task's prompt or capability here before you schedule it.
 >
 > Scheduled tasks run unattended, so start with the narrowest file and network permissions that allow the task to work. Review the first few runs before relying on the automation.
 
 Give a few relevant examples:
 
 ```text
-Every Friday at 5 pm, run $update for this Second Brain and report what changed.
+Every Friday at 5 pm, run update for this Second Brain and report what changed.
 ```
 
 ```text
@@ -303,7 +301,7 @@ Every weekday morning, read TODO.md and brief me on overdue and upcoming work.
 On the first working day of each month, review my active project indexes and identify projects with no recent update.
 ```
 
-Check whether scheduled tasks are supported in the user's current Codex or ChatGPT environment before offering to configure one. Do not claim that a schedule has been created unless it is visible and validated in the relevant Scheduled interface.
+Check whether scheduled tasks are supported in the user's current environment before offering to configure one. Do not claim that a schedule has been created unless it is visible and validated in the relevant scheduling interface.
 
 ## Stage 11: Explain how to add information
 
@@ -325,7 +323,7 @@ I met Sarah today. Create a note about her under people.
 Create a project note for the office relocation and include the next actions we discussed.
 ```
 
-Explain that the user is not limited to the initial folders. They can ask Codex to create a new folder at any time, for example:
+Explain that the user is not limited to the initial folders. They can ask you to create a new folder at any time, for example:
 
 ```text
 Create a folder called reading for my book notes.
@@ -357,7 +355,7 @@ Summarise the current status of the office relocation project.
 Find my notes related to artificial intelligence and healthcare.
 ```
 
-Explain that Codex will start from the root index, follow the relevant folder indexes, and open only the files needed. It can find, summarise, compare, trace, list, and identify gaps or contradictions across notes. It should identify its source files when useful.
+Explain that you will start from the root index, follow the relevant folder indexes, and open only the files needed. You can find, summarise, compare, trace, list, and identify gaps or contradictions across notes, and should identify your source files when useful.
 
 Also tell the user:
 
@@ -365,7 +363,7 @@ Also tell the user:
 >
 > If I still cannot locate it, I'll explain where I searched and ask for another clue rather than pretending the information does not exist.
 
-Remind the user to run `$update` after substantial structural or content changes.
+Remind the user to run `update` after substantial structural or content changes.
 
 ## Stage 13: Offer a CEO or Staffer Second Brain
 
@@ -388,7 +386,7 @@ If the user chooses neither, skip to Stage 16.
 After the user selects CEO, Staffer, or both, explain that `BRAIN.md` will contain the relevant thinking and assessment framework. Offer two ways to populate it:
 
 1. **Write the framework directly.** The user describes the principles, questions, criteria, preferences, and decision-making process that the Second Brain should use.
-2. **Synthesise it from source material—the typical approach.** The user supplies documents that demonstrate the relevant person's thinking, such as speeches, emails, meeting notes, decision papers, annotations, strategy documents, interviews, or previous assessments. Codex spots recurring patterns and drafts a framework.
+2. **Synthesise it from source material—the typical approach.** The user supplies documents that demonstrate the relevant person's thinking, such as speeches, emails, meeting notes, decision papers, annotations, strategy documents, interviews, or previous assessments. You spot recurring patterns and draft a framework.
 
 Ask which approach the user prefers.
 
@@ -406,7 +404,7 @@ For document synthesis:
 
 Create `BRAIN.md` only from the confirmed framework. If both modes were selected, give the CEO and Staffer frameworks clearly separated sections in the same file.
 
-Add `BRAIN.md` to the root `INDEX.md`. Update `AGENTS.md` so the startup list includes:
+Add `BRAIN.md` to the root `INDEX.md`. Update the harness instructions file so the startup list includes:
 
 ```md
 4. `BRAIN.md` — the confirmed thinking and assessment framework for the chosen Second Brain. Apply it when the user asks for analysis, assessment, options, advice, or recommendations. Distinguish conclusions supported by the framework from additional reasoning.
@@ -414,33 +412,33 @@ Add `BRAIN.md` to the root `INDEX.md`. Update `AGENTS.md` so the startup list in
 
 Adjust numbering if other startup files already exist.
 
-## Stage 15: Create the `$assess` skill
+## Stage 15: Create the `assess` capability
 
 Tell the user:
 
-> I'll now create an `$assess` skill. Use it when you want your Second Brain to examine a situation, document, idea, proposal, decision, or person through the framework in `BRAIN.md`.
+> I'll now create an `assess` capability. Use it when you want your Second Brain to examine a situation, document, idea, proposal, decision, or person through the framework in `BRAIN.md`.
 
-Give examples:
+Give examples (invoking however your harness does, for example `$assess` or `/assess`):
 
 ```text
-$assess this policy proposal
+assess this policy proposal
 ```
 
 ```text
-$assess whether we should proceed with this project
+assess whether we should proceed with this project
 ```
 
 ```text
-$assess this meeting paper and identify what the CEO is likely to question
+assess this meeting paper and identify what the CEO is likely to question
 ```
 
 ```text
-$assess my working relationship with this stakeholder
+assess my working relationship with this stakeholder
 ```
 
-Create `.agents/skills/assess/SKILL.md` with valid frontmatter, the name `assess`, and a description that clearly triggers for assessments using `BRAIN.md`.
+Package this as a user-invokable capability named `assess`, using your harness's native mechanism (for example a skill at `.agents/skills/assess/SKILL.md` or `.claude/skills/assess/SKILL.md`, or a custom command), with whatever metadata/frontmatter your harness requires and a description that clearly triggers for assessments using `BRAIN.md`.
 
-The skill must instruct Codex to:
+The capability must instruct you to:
 
 1. Load `BRAIN.md`.
 2. Clarify the purpose or decision when it is unclear.
@@ -500,7 +498,7 @@ Find or create a workflow that researches across multiple credible sources, dist
 
 ### Option 4: Google tools integration
 
-Explain which integrations are actually supported in the current Codex environment. Treat Gmail, Google Calendar, Google Drive, and NotebookLM as separate capabilities when necessary. Explain authentication scopes before requesting authorisation, request the least access needed, and never ask the user to paste secrets or tokens into chat.
+Explain which integrations are actually supported in the current agent environment. Treat Gmail, Google Calendar, Google Drive, and NotebookLM as separate capabilities when necessary. Explain authentication scopes before requesting authorisation, request the least access needed, and never ask the user to paste secrets or tokens into chat.
 
 ### Option 5: Website scraping
 
@@ -518,7 +516,7 @@ Explain:
 
 > This capability requires a `TODO.md` file in the root of your Second Brain. It will be the source of truth for your tasks, deadlines, and priorities.
 >
-> I'll add `TODO.md` to the root `INDEX.md` so it appears in the map of your Second Brain. I'll also add it to `AGENTS.md` so Codex reads it at the beginning of every session and can proactively alert you to important deadlines.
+> I'll add `TODO.md` to the root `INDEX.md` so it appears in the map of your Second Brain. I'll also add it to the harness instructions file so I read it at the beginning of every session and can proactively alert you to important deadlines.
 >
 > You will need to keep `TODO.md` current. I can help update it, but I cannot remind you about tasks or deadlines that have not been recorded.
 
@@ -527,8 +525,8 @@ If selected:
 1. Create a concise `TODO.md` template that supports task status, deadlines, and priority without imposing unnecessary complexity.
 2. Ask whether the user wants to add any current tasks and deadlines.
 3. Add this relative link and description to the root `INDEX.md`: `TODO.md` is the living source of truth for current tasks, deadlines, and priorities.
-4. Add `TODO.md` to the startup list in `AGENTS.md`, adjusting numbering as necessary. Instruct Codex to read it at the start of every session, draw attention to overdue tasks, approaching deadlines, and important deliverables when relevant, and never invent urgency or dates.
-5. Create the deadline-briefing skill. It must distinguish overdue, upcoming, undated, completed, and high-priority tasks without inventing missing dates.
+4. Add `TODO.md` to the startup list in the harness instructions file, adjusting numbering as necessary. Instruct the agent to read it at the start of every session, draw attention to overdue tasks, approaching deadlines, and important deliverables when relevant, and never invent urgency or dates.
+5. Create the deadline-briefing capability. It must distinguish overdue, upcoming, undated, completed, and high-priority tasks without inventing missing dates.
 6. Validate the workflow with the user.
 
 If the user does not select this option, do not create `TODO.md` or add it to startup context.
@@ -540,15 +538,15 @@ Review the completed environment and verify that:
 - All selected folders exist.
 - Every selected folder has an accurate `INDEX.md`.
 - The root `INDEX.md` maps the current structure.
-- `AGENTS.md` references all applicable startup files.
+- The harness instructions file references all applicable startup files.
 - `SOUL.md` and `USER.md` contain only confirmed information.
-- `$update` is installed and discoverable.
-- `$summarise` is installed, validated, and discoverable.
-- `$reset` is installed, validated, and discoverable without executing a real reset.
-- `BRAIN.md` and `$assess` exist if the user selected a CEO or Staffer Second Brain.
-- `TODO.md` and its briefing skill exist if the user selected deadline briefing.
+- `update` is installed and discoverable.
+- `summarise` is installed, validated, and discoverable.
+- `reset` is installed, validated, and discoverable without executing a real reset.
+- `BRAIN.md` and `assess` exist if the user selected a CEO or Staffer Second Brain.
+- `TODO.md` and its briefing capability exist if the user selected deadline briefing.
 - Every optional capability was either validated or clearly reported as pending.
 
-Give the user a concise summary of what was created, where it lives, how to start future sessions, and the most useful first commands. Remind them that they can speak naturally, use `$` to browse skills, run `$update` after meaningful structural changes, run `$summarise` to build or refresh a folder-level synthesis, and ask Codex for help whenever navigation or retrieval fails.
+Give the user a concise summary of what was created, where it lives, how to start future sessions, and the most useful first commands. Remind them that they can speak naturally, browse their capabilities using their harness's mechanism, run `update` after meaningful structural changes, run `summarise` to build or refresh a folder-level synthesis, and ask you for help whenever navigation or retrieval fails.
 
 Do not claim that a tool, skill, connector, account, or workflow works unless you actually validated it.

@@ -4,11 +4,13 @@ A guided setup for an interactive, [Obsidian](https://obsidian.md)-compatible **
 
 Point your AI coding agent at [`second-brain-initialisation.md`](second-brain-initialisation.md) and it will walk you — conversationally, one stage at a time — through building a personal knowledge vault that an AI agent can navigate efficiently.
 
+The initialisation doc is **harness-agnostic**: it describes *what* to build and lets each agent translate the mechanics into its own conventions. It works with **Codex, Claude Code, Gemini CLI, and OpenCode** — each creates its own native instructions file (`AGENTS.md` / `CLAUDE.md` / `GEMINI.md`) and packages the skills as its own native skills or custom commands.
+
 ## What it sets up
 
 - **`SOUL.md`** — the canonical definition of your agent's role, identity, personality, communication style, and boundaries.
 - **`USER.md`** — confirmed facts about you, so the agent's help stays relevant.
-- **`AGENTS.md`** — startup context and operating rules the agent reads at the start of every session.
+- **The harness instructions file** (`AGENTS.md`, `CLAUDE.md`, or `GEMINI.md`) — startup context and operating rules the agent reads at the start of every session.
 - **`INDEX.md` files** — a root map plus per-folder indexes that let the agent find information through progressive disclosure, without loading the whole vault into context.
 - **Default folders** — `people/`, `ideas/`, `projects/`, `meetings/` (all customisable during setup).
 
@@ -16,7 +18,7 @@ Point your AI coding agent at [`second-brain-initialisation.md`](second-brain-in
 
 ```text
 Second Brain/
-├── AGENTS.md
+├── AGENTS.md   # or CLAUDE.md / GEMINI.md — your harness's instructions file
 ├── SOUL.md
 ├── USER.md
 ├── INDEX.md
@@ -28,13 +30,15 @@ Second Brain/
 
 ## Skills it creates
 
-- **`$update`** — refreshes `AGENTS.md` and all `INDEX.md` files after you add, move, rename, or delete files, without touching your notes.
-- **`$summarise`** — recursively reads a folder and produces a context-sensitive, Obsidian-linked `SUMMARY.md`, tracking changes via a `.summary-manifest.json` so later runs only re-read what actually changed.
+Each is packaged in your harness's native format and invoked its own way (e.g. `$update` in Codex, `/update` in Claude Code or Gemini CLI).
+
+- **`update`** — refreshes the harness instructions file and all `INDEX.md` files after you add, move, rename, or delete files, without touching your notes.
+- **`summarise`** — recursively reads a folder and produces a context-sensitive, Obsidian-linked `SUMMARY.md`, tracking changes via a `.summary-manifest.json` so later runs only re-read what actually changed.
 
 ## Prerequisites
 
 - [Obsidian](https://obsidian.md) with the **Terminal** community plugin.
-- An AI coding CLI (e.g. Codex) that discovers `AGENTS.md` at session start.
+- An AI coding agent — **Codex, Claude Code, Gemini CLI, or OpenCode** — that discovers a project instructions file at session start.
 
 ## Getting started
 
