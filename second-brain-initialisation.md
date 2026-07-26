@@ -1,12 +1,12 @@
-# Second Brain Initialisation
+																	``# Second Brain Initialisation
 
 ## Purpose
 
-This file is designed to be run by Codex inside an empty Obsidian vault. Codex should guide the user through installing and configuring a personal second brain using short, approachable prompts.
+This file is designed to be run by an AI coding agent — such as Claude Code, Codex, Gemini CLI, or OpenCode — inside an Obsidian vault. The agent should guide the user through installing and configuring a personal second brain using short, approachable prompts. The procedure is deliberately **harness-agnostic**: it adapts file names, skill locations, and invocation syntax to whichever agent runs it (see Step 0.5).
 
 Treat this document as an installation procedure, not as reference material. Work through one step at a time, wait for the user's response whenever a decision is required, create the relevant files in the vault, and confirm the result before continuing.
 
-## Guidance for Codex
+## Guidance for the Agent
 
 - Begin by briefly explaining the current step and why it matters.
 - Ask focused questions in plain language.
@@ -81,6 +81,27 @@ Confirm that Python resolves to the intended Anaconda environment. Report the in
 
 This prerequisite step must remain skippable when the requirements are already met or when the user declines installation. A declined or policy-blocked installation should not prevent steps that do not require Python; explain which later validation or automation features may be unavailable.
 
+## Step 0.5: Detect Your Harness and Set Conventions
+
+Different agent harnesses use different file names, skill/command locations, and invocation syntax. Before creating any files, identify which harness you are running in, state it to the user, and fix the conventions you will use for the rest of this installation.
+
+Resolve these three conventions:
+
+| Convention | Meaning | Common values |
+| --- | --- | --- |
+| `GUIDANCE_FILE` | The harness's root guidance / memory file | Claude Code → `CLAUDE.md`; Gemini CLI → `GEMINI.md`; Codex → `AGENTS.md`; OpenCode → `AGENTS.md` |
+| `SKILLS_DIR` | Where reusable skills / custom commands live | Claude Code → `.claude/skills/`; Codex → `.agents/skills/`; OpenCode → `.opencode/command/`; Gemini CLI → `.gemini/commands/` |
+| `INVOKE` | How the user triggers a skill | Claude Code / Gemini CLI / OpenCode → `/name`; Codex → `$name` |
+
+Guidance:
+
+- Prefer each harness's own **native, documented** conventions. The table is a starting point, not authority — rely on what you know about the harness you are actually running in.
+- If you cannot determine the harness, default to `GUIDANCE_FILE = AGENTS.md` (a widely supported cross-tool convention), `SKILLS_DIR = skills/`, and `INVOKE = /`, and tell the user which defaults you used.
+- Throughout this document, wherever a step names `AGENTS.md`, a skill path under `.agents/skills/`, an `openai.yaml`, or a `$name`/`/name` trigger, substitute your resolved `GUIDANCE_FILE`, `SKILLS_DIR`, native metadata format, and `INVOKE` prefix.
+- Each skill is authored once as a **portable `SKILL.md`** (only `name` + `description` frontmatter, then instructions). Install that same content into your harness's native location and add whatever wrapper or UI metadata your tool expects. Do not assume another harness's wrapper format — for example, `openai.yaml` is Codex-specific, and Claude Code, Gemini CLI, and OpenCode each expect their own.
+
+Record the resolved conventions, then continue.
+
 ## Step 1: Define the Agent's Identity
 
 The first step establishes the identity and behavioural foundation of the user's second-brain agent. The result must be stored in a file named `SOUL.md` at the root of the Obsidian vault.
@@ -154,7 +175,7 @@ Ask the user for:
 
 Keep the questions approachable and allow brief answers. Ask follow-up questions only when an omission would materially weaken the profile.
 
-If the user asks Codex to invent a profile, create a conservative working profile using only known details and clearly labelled assumptions. Do not invent sensitive biographical information, employment, credentials, relationships, health details, or firm commitments. Mark the profile as provisional and easy to revise.
+If the user asks the agent to invent a profile, create a conservative working profile using only known details and clearly labelled assumptions. Do not invent sensitive biographical information, employment, credentials, relationships, health details, or firm commitments. Mark the profile as provisional and easy to revise.
 
 Once enough context is available, create `USER.md` with this structure:
 
@@ -213,7 +234,7 @@ The initial design session used a provisional profile for Wilson:
 - **Focus:** Digital projects, personal systems, learning, writing, and experimentation
 - **Preferences:** Clear recommendations, lightweight systems, explicit decisions, respectful challenge, and minimal jargon
 
-This example should not be silently reused in a fresh installation. It demonstrates how to create a useful but conservative profile when the user asks Codex to supply the details.
+This example should not be silently reused in a fresh installation. It demonstrates how to create a useful but conservative profile when the user asks the agent to supply the details.
 
 ## Step 3: Create the Working Brain and Todo List
 
@@ -258,7 +279,7 @@ When maintaining the list:
 - If the requested item could match multiple existing todos, ask which one the user means before changing it.
 - Avoid silently creating duplicate items when an equivalent todo already exists.
 
-Also create `brain/INDEX.md`. Describe the working brain's purpose and summarize every file and immediate subfolder it contains. Update this index as the brain grows so Codex can discover the user's operational knowledge efficiently.
+Also create `brain/INDEX.md`. Describe the working brain's purpose and summarize every file and immediate subfolder it contains. Update this index as the brain grows so the agent can discover the user's operational knowledge efficiently.
 
 Before creating the folder or notes, check whether they already exist. Preserve existing content and merge the initial structure only where needed.
 
@@ -266,21 +287,21 @@ After creation, recap the purpose of the `brain` folder, tell the user where the
 
 ## Step 4: Create the Vault Indexing Structure
 
-Build a hierarchical map that helps Codex navigate the vault efficiently without scanning every file. Create `INDEX.md` at the vault root and an `INDEX.md` inside every user-knowledge folder.
+Build a hierarchical map that helps the agent navigate the vault efficiently without scanning every file. Create `INDEX.md` at the vault root and an `INDEX.md` inside every user-knowledge folder.
 
 The root `INDEX.md` must:
 
 - Explain that it is the entry point for vault navigation.
 - List every user-knowledge file in the root with a concise description of its purpose and contents.
 - List every root-level knowledge folder with a concise description and a link to its own `INDEX.md`.
-- Explain how Codex should traverse nested indexes.
+- Explain how the agent should traverse nested indexes.
 - State when the index must be updated.
 
 Each folder-level `INDEX.md` must:
 
 - Describe the folder's purpose.
 - Summarize and link to its files and immediate subfolders.
-- Direct Codex to nested `INDEX.md` files where applicable.
+- Direct the agent to nested `INDEX.md` files where applicable.
 - Explain any folder-specific retrieval or maintenance rules.
 - State when that index must be updated.
 
@@ -298,7 +319,7 @@ Use this navigation procedure:
 3. When entering a knowledge folder, read its `INDEX.md` before inspecting its contents.
 4. Continue through nested indexes until the likely source files are identified.
 5. Use a broader search only when the indexes are missing, stale, ambiguous, or insufficient.
-6. For a large vault or a request spanning several independent branches, Codex may delegate separate indexed branches to multiple agents for parallel searching, provided multi-agent work is available and appropriate.
+6. For a large vault or a request spanning several independent branches, the agent may delegate separate indexed branches to multiple agents for parallel searching, provided multi-agent work is available and appropriate.
 7. Combine the results, resolve overlaps, and report which source files supported the answer.
 
 Treat `.obsidian/`, plugin dependencies, caches, generated files, and other application internals as system data rather than user knowledge. Mention relevant system folders at the root when useful, but do not create or maintain knowledge indexes throughout generated or third-party directory trees.
@@ -312,67 +333,49 @@ Index maintenance is part of every future vault change:
 - Keep summaries brief enough to scan but specific enough to route retrieval.
 - Do not claim that an index is complete unless its directory contents were inspected.
 
-After generating the initial index tree, recap the vault's main branches and explain that Codex will use the indexes as a navigation map. Then wait for permission to begin the next installation step.
+After generating the initial index tree, recap the vault's main branches and explain that the agent will use the indexes as a navigation map. Then wait for permission to begin the next installation step.
 
-## Step 5: Create the Index Update Skill
+## Step 5: Install the Update Skill
 
-Explain that vault indexes can become stale as notes are created, edited, renamed, moved, or deleted. Create a vault-local Codex skill named `$update` so the user can reconcile the complete index tree whenever needed.
+The `update` skill reconciles the whole `INDEX.md` tree and the guidance file, detects file drift since it last ran (content hashing → `.brain-state.json`), and journals each run to `chat-history/`. It is invoked with your harness's `INVOKE` prefix (for example `/update`, or `$update` on Codex).
 
-Store the skill at:
+Like `write-noms` (Step 6), it is supplied as a **bundled portable source** — `update.md` at the vault root — so every install is identical and replicates across machines by copying, not by re-authoring. Treat that file as an installation source:
 
-```text
-.agents/skills/update/
-├── SKILL.md
-└── agents/
-    └── openai.yaml
-```
+1. Confirm that `update.md` exists at the vault root.
+2. Read the entire file.
+3. Validate its YAML frontmatter contains `name: update` and a clear triggering description.
+4. Create `<SKILLS_DIR>/update/SKILL.md` from its contents, substituting the harness conventions it documents: `GUIDANCE_FILE`, `SKILLS_DIR`, and the `INVOKE` prefix. Replace its "Harness conventions (portable source)" table with a one-line note stating the resolved conventions.
+5. Preserve every substantive rule: the full-reconciliation contract, the sha256 drift detection and its classification table, the zero-install hash fallback chain, the first-run guidance-file creation from `GUIDE.md`, the `chat-history/` journal format, the exclusions, and the limitations.
+6. Add whatever native wrapper or UI metadata your harness expects, with a default prompt that explicitly invokes the update skill.
+7. Leave the root `update.md` in place as the portable installation source and replication source of truth.
 
-The skill must:
+Do not silently invent a replacement skill if `update.md` is missing or incomplete. Explain the problem and ask the user to provide or complete the source.
 
-- Trigger when the user invokes `$update` or asks to refresh, rebuild, or audit the vault indexes.
-- Inventory the current filesystem rather than relying on remembered changes or timestamps.
-- Read all existing `INDEX.md` files.
-- Identify user-knowledge folders with missing indexes.
-- Inspect note contents where filenames are insufficient to determine purpose.
-- Create or update indexes from the deepest folders upward.
-- Update the root `INDEX.md` last.
-- Add entries for new files and folders.
-- remove entries for deleted or moved content.
-- Correct descriptions when a file or folder's purpose materially changes.
-- Preserve useful hand-written index guidance.
-- Re-inventory and verify coverage after making changes.
-- Report which indexes changed and flag unresolved ambiguity.
+Also ensure the vault has a `chat-history/` folder with its own `INDEX.md` (the session journal the skill writes to), and — if the vault uses git — add `.brain-state.json` to `.gitignore`.
 
-This must be a full reconciliation every time. That makes `$update` reliable even if the user has worked for many sessions without running it.
+After installation, validate that:
 
-Exclude `.obsidian/`, `.git/`, caches, generated dependencies, and skill implementation details from item-by-item knowledge indexing. These may be summarized as system directories in the root index when useful.
+- The directory and frontmatter names are `update`.
+- `SKILL.md` has only `name` and `description` in its frontmatter.
+- No unresolved `GUIDANCE_FILE` / `SKILLS_DIR` / `INVOKE` tokens remain.
+- The installed instructions retain drift detection, journaling, first-run guidance creation, and the full-reconciliation contract.
+- Any native short description is 25–64 characters and its default prompt invokes the update skill.
 
-Recommend running `$update` near the end of each working session, after substantial vault restructuring, or whenever navigation appears stale. Do not claim that Codex will run it automatically unless the current environment provides and configures an explicit end-of-session automation mechanism.
-
-Create concise UI metadata in `agents/openai.yaml` with a default prompt that explicitly invokes `$update`.
-
-After creating the skill, validate that:
-
-- Its directory name and frontmatter name are `update`.
-- `SKILL.md` contains only the required `name` and `description` frontmatter fields.
-- The description clearly states what the skill does and when it triggers.
-- `agents/openai.yaml` contains a display name, a 25–64 character short description, and a default prompt mentioning `$update`.
-
-Tell the user that `$update` is ready, explain when to invoke it, and wait for the definition of the next skill.
+Tell the user the update skill is ready, explain when to invoke it (after changes, at session start to catch up, near session end to snapshot), and wait before continuing.
 
 ## Step 6: Install the Write NOMs Skill
 
-Explain that `$write-noms` converts transcripts, meeting notes, or recordings into structured Notes of Meeting using reported speech, clear attribution, prose notes, a contents list, and an action table.
+Explain that the write-noms skill converts transcripts, meeting notes, or recordings into structured Notes of Meeting using reported speech, clear attribution, prose notes, a contents list, and an action table. It is invoked with your harness's `INVOKE` prefix (for example `/write-noms`, or `$write-noms` on Codex).
 
 The complete skill specification is supplied in `write-noms.md` at the vault root. Treat that file as an installation source:
 
 1. Confirm that `write-noms.md` exists.
 2. Read the entire file.
 3. Validate that its YAML frontmatter contains the skill name and a clear triggering description.
-4. Create `.agents/skills/write-noms/SKILL.md` from its contents.
+4. Create `<SKILLS_DIR>/write-noms/SKILL.md` from its contents (a portable `SKILL.md` with only `name` and `description` frontmatter, then the instructions).
 5. Preserve the source's substantive rules, structure, and example.
-6. Ensure the installed skill recognizes `$write-noms`; it may retain `/write-noms` as an additional invocation alias.
-7. Create `.agents/skills/write-noms/agents/openai.yaml` with suitable UI metadata and a default prompt that explicitly mentions `$write-noms`.
+6. Ensure the installed skill recognizes the write-noms invocation; it may retain other aliases your harness supports.
+7. Add whatever native wrapper or UI metadata your harness expects (as in Step 5), with a default prompt that explicitly mentions the write-noms skill. Do not assume another harness's wrapper format.
 8. Leave the root `write-noms.md` in place as the portable installation source.
 
 Do not silently invent a replacement skill if `write-noms.md` is missing or incomplete. Explain the problem and ask the user to provide or complete the source.
@@ -382,8 +385,8 @@ After installation, validate that:
 - The directory and frontmatter names are `write-noms`.
 - `SKILL.md` has only `name` and `description` in its frontmatter.
 - The installed instructions retain the source's NOM grammar, structure, attribution, action, and review rules.
-- The short description in `openai.yaml` is 25–64 characters.
-- The default prompt explicitly invokes `$write-noms`.
+- Any native short description is 25–64 characters.
+- The default prompt/trigger explicitly invokes the write-noms skill.
 
 Tell the user that the skill is ready and that they can invoke it with a transcript or meeting notes. Then continue to the next installation step only with the user's permission.
 
@@ -394,18 +397,18 @@ Perform this step only after every installation step is complete and verified. D
 Use this completion sequence:
 
 1. Review the preceding steps and verify that all required vault files, folders, indexes, and skills exist.
-2. Confirm that the installed `$write-noms` skill is complete and does not depend on reading the root `write-noms.md` at runtime.
-3. Confirm that the bundled root `AGENTS.md` template exists. Do not depend on `/init`; the template is part of this installation package so the process works consistently across Codex surfaces.
-4. Update `AGENTS.md` from the completed vault setup. Replace every placeholder using the final contents of `SOUL.md`, `USER.md`, the vault indexes, the working-brain structure, and the installed skills. Ensure the resulting file gives Codex durable vault-level guidance to:
+2. Confirm that the installed write-noms skill is complete and does not depend on reading the root `write-noms.md` at runtime.
+3. Confirm that the bundled root guidance template exists (provided as `AGENTS.md`). Do not depend on any harness-specific bootstrap command (such as `/init`); the template ships with this installation package so the process works consistently across harnesses.
+4. Resolve the bundled template into your harness's `GUIDANCE_FILE` (for example `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md` from Step 0.5). Replace every placeholder using the final contents of `SOUL.md`, `USER.md`, the vault indexes, the working-brain structure, and the installed skills. If your `GUIDANCE_FILE` is not `AGENTS.md`, write the resolved content to it and do not leave the unresolved `AGENTS.md` template behind — either remove it or keep a resolved copy as a portable fallback. Ensure the resulting file gives the agent durable vault-level guidance to:
    - Read `INDEX.md`, `SOUL.md`, and `USER.md` at the start of its work.
    - Navigate through folder-level indexes before broad searching.
    - Fall back to a comprehensive content search when indexes are insufficient or the user explicitly requests one, while excluding application internals and reporting the supporting vault files.
    - Use parallel agents for large, independent search branches when that capability is available and appropriate.
-   - Run or recommend `$update` if a broad search reveals stale or missing index entries.
+   - Run or recommend the update skill if a broad search reveals stale or missing index entries.
    - Store everyday working knowledge and todos in `brain/`.
    - Maintain todos as Markdown checklists.
    - Use vault-local skills when their trigger conditions apply.
-   - Run `$update` after substantial changes or near the end of a substantive session.
+   - Run the update skill after substantial changes or near the end of a substantive session.
    - Preserve privacy, user agency, existing content, and the hierarchical index structure.
    Remove the installation-template notice after all placeholders have been resolved. Do not invent missing identity details; derive them from the installed files or ask the user.
 5. Tell the user that the second-brain installation is complete and briefly summarize what was installed.
@@ -413,10 +416,10 @@ Use this completion sequence:
    - `second-brain-initialisation.md`
    - `write-noms.md`
 7. Immediately before deletion, ask the user to confirm that installation is finished and that these two files may be permanently removed. If the user declines or still needs them, stop this step and preserve both files.
-8. After confirmation, delete only those two exact files. Do not delete the installed `.agents/skills/write-noms/SKILL.md`.
-9. Invoke `$update` after deletion. It must perform its normal full vault audit, remove the deleted installation-file entries from the root `INDEX.md`, and verify every remaining index against the filesystem.
+8. After confirmation, delete only those two exact files. Do not delete the installed write-noms `SKILL.md` in your `SKILLS_DIR`.
+9. Invoke the update skill after deletion. It must perform its normal full vault audit, remove the deleted installation-file entries from the root `INDEX.md`, and verify every remaining index against the filesystem.
 10. Report that cleanup and final indexing are complete, listing the deleted files and any indexes changed.
 
-The order is important: announce completion, confirm cleanup, delete the installation sources, and run `$update` last. Never run the final index update before deleting the sources, because doing so would leave stale root-index entries.
+The order is important: announce completion, confirm cleanup, delete the installation sources, and run the update skill last. Never run the final index update before deleting the sources, because doing so would leave stale root-index entries.
 
-This step is intentionally destructive and must not run merely because Codex has reached the end of this document. The user must explicitly confirm final cleanup at that time.
+This step is intentionally destructive and must not run merely because the agent has reached the end of this document. The user must explicitly confirm final cleanup at that time.
