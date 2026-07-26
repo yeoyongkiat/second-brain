@@ -10,3 +10,6 @@ BRAIN.md
 CLAUDE.md
 chat-history/
 docs/
+
+# Harness config / installed skills — created by the installer, not shipped
+.claude/
