@@ -1,4 +1,4 @@
-																	``# Second Brain Initialisation
+# Second Brain Initialisation
 
 ## Purpose
 
@@ -397,10 +397,11 @@ Perform this step only after every installation step is complete and verified. D
 Use this completion sequence:
 
 1. Review the preceding steps and verify that all required vault files, folders, indexes, and skills exist.
-2. Confirm that the installed write-noms skill is complete and does not depend on reading the root `write-noms.md` at runtime.
-3. Confirm that the bundled root guidance template exists (provided as `AGENTS.md`). Do not depend on any harness-specific bootstrap command (such as `/init`); the template ships with this installation package so the process works consistently across harnesses.
-4. Resolve the bundled template into your harness's `GUIDANCE_FILE` (for example `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md` from Step 0.5). Replace every placeholder using the final contents of `SOUL.md`, `USER.md`, the vault indexes, the working-brain structure, and the installed skills. If your `GUIDANCE_FILE` is not `AGENTS.md`, write the resolved content to it and do not leave the unresolved `AGENTS.md` template behind — either remove it or keep a resolved copy as a portable fallback. Ensure the resulting file gives the agent durable vault-level guidance to:
+2. Confirm that the installed `write-noms` and `update` skills are complete and self-contained — neither depends on reading its root source (`write-noms.md`, `update.md`) at runtime.
+3. Confirm that the bundled root guidance template exists (provided as `GUIDE.md`). Do not depend on any harness-specific bootstrap command (such as `/init`); the template ships with this installation package so the process works consistently across harnesses. `GUIDE.md` is a **template only** — it is always a separate file from the harness's guidance file, on every harness (including Codex/OpenCode, where the guidance file is `AGENTS.md` but the template is still `GUIDE.md`).
+4. Resolve the bundled `GUIDE.md` template into your harness's `GUIDANCE_FILE` (for example `CLAUDE.md`, `GEMINI.md`, or `AGENTS.md` from Step 0.5). Write the resolved content to `GUIDANCE_FILE`; leave `GUIDE.md` itself untouched for now (it is deleted in the cleanup below, once the guidance file exists). Replace every placeholder using the final contents of `SOUL.md`, `USER.md`, the vault indexes, the working-brain structure, and the installed skills. Ensure the resulting file gives the agent durable vault-level guidance to:
    - Read `INDEX.md`, `SOUL.md`, and `USER.md` at the start of its work.
+   - Read the most recent `chat-history/` entries at session start for continuity, and run the update skill first when beginning substantive work to catch up on file drift.
    - Navigate through folder-level indexes before broad searching.
    - Fall back to a comprehensive content search when indexes are insufficient or the user explicitly requests one, while excluding application internals and reporting the supporting vault files.
    - Use parallel agents for large, independent search branches when that capability is available and appropriate.
@@ -408,18 +409,24 @@ Use this completion sequence:
    - Store everyday working knowledge and todos in `brain/`.
    - Maintain todos as Markdown checklists.
    - Use vault-local skills when their trigger conditions apply.
-   - Run the update skill after substantial changes or near the end of a substantive session.
+   - Run the update skill after substantial changes or near the end of a substantive session — it also detects file drift (content hashing → `.brain-state.json`) and journals the session to `chat-history/`.
    - Preserve privacy, user agency, existing content, and the hierarchical index structure.
    Remove the installation-template notice after all placeholders have been resolved. Do not invent missing identity details; derive them from the installed files or ask the user.
 5. Tell the user that the second-brain installation is complete and briefly summarize what was installed.
-6. Explain that the two root installation sources are now disposable:
-   - `second-brain-initialisation.md`
-   - `write-noms.md`
-7. Immediately before deletion, ask the user to confirm that installation is finished and that these two files may be permanently removed. If the user declines or still needs them, stop this step and preserve both files.
-8. After confirmation, delete only those two exact files. Do not delete the installed write-noms `SKILL.md` in your `SKILLS_DIR`.
-9. Invoke the update skill after deletion. It must perform its normal full vault audit, remove the deleted installation-file entries from the root `INDEX.md`, and verify every remaining index against the filesystem.
+6. Explain that the root installation sources are now disposable from this vault, because their contents have been installed into the harness's native locations (skills into `SKILLS_DIR`, guidance into `GUIDANCE_FILE`):
+   - `second-brain-initialisation.md` — the installer procedure.
+   - `update.md` — the update skill source (now installed as `<SKILLS_DIR>/update/SKILL.md`).
+   - `write-noms.md` — the write-noms skill source (now installed as `<SKILLS_DIR>/write-noms/SKILL.md`).
+   - `GUIDE.md` — the guidance template (now resolved into `GUIDANCE_FILE`).
+   - `README.md` — the public setup readme.
+   These five files are also the **replication/installation package**. Before deleting them from this installed vault, confirm the user keeps a separate master copy of the installation package (this repo) if they intend to replicate the second brain onto other machines. Deleting them here only cleans up this one installed vault.
+7. Immediately before deletion, ask the user to confirm that installation is finished and that these five files may be permanently removed. If the user declines or still needs any of them, stop this step and preserve them.
+8. After confirmation, delete only those five exact files: `second-brain-initialisation.md`, `update.md`, `write-noms.md`, `GUIDE.md`, and `README.md`. Do not delete the installed `SKILL.md` files in your `SKILLS_DIR`, the resolved `GUIDANCE_FILE`, or any vault knowledge, index, or `chat-history/` content.
+9. Invoke the update skill after deletion. It must perform its normal full vault audit, remove the deleted installation-file entries from the root `INDEX.md`, refresh the `GUIDANCE_FILE`, and verify every remaining index against the filesystem.
 10. Report that cleanup and final indexing are complete, listing the deleted files and any indexes changed.
 
 The order is important: announce completion, confirm cleanup, delete the installation sources, and run the update skill last. Never run the final index update before deleting the sources, because doing so would leave stale root-index entries.
+
+Note: once `GUIDE.md` is deleted, the update skill's first-run guidance-creation path no longer applies to this vault — that is expected, because the `GUIDANCE_FILE` already exists and is the durable startup context from here on.
 
 This step is intentionally destructive and must not run merely because the agent has reached the end of this document. The user must explicitly confirm final cleanup at that time.
