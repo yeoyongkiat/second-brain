@@ -15,6 +15,7 @@ This vault is a **research corpus on Raymond Chua** (Chief Executive Officer, Si
 - [[linkedin/INDEX|linkedin]] — 50 of his LinkedIn posts (raw text). Per-post index lives in [[PROFILE]].
 - [[speeches/INDEX|speeches]] — 12 HSA CEO speeches (verbatim). Synthesised in [[SPEECH]].
 - [[service-requirements/INDEX|service-requirements]] — HCSA legislation: 22 statutes/regulations as paired PDF + markdown across 6 subfolders.
+- [[chat-history/INDEX|chat-history]] — Session journal: per-run notes of file drift + what each session did. Read recent entries at session start.
 
 ## System files & directories (not knowledge-indexed)
 
@@ -23,6 +24,8 @@ This vault is a **research corpus on Raymond Chua** (Chief Executive Officer, Si
 - `README.md` — public repo readme describing the second-brain setup.
 - `second-brain-initialisation.md` — the installation procedure (kept, not deleted).
 - `write-noms.md` — source for the `/write-noms` skill (kept as portable install source).
+- `update.md` — canonical portable source for the `/update` skill (installed into `.claude/skills/`). Kept as the replication source of truth.
+- `.brain-state.json` — local system cache: the content-hash baseline `/update` diffs against to detect drift. Git-ignored; do not hand-edit.
 - `.claude/skills/` — vault-local skills (e.g. `update`). Implementation, not knowledge.
 - `.git/` — version control.
 
