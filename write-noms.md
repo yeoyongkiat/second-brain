@@ -42,12 +42,12 @@ Generate government-style Notes of Meeting (NOMs) from a transcript or meeting n
 - Bullet point list, most senior person first
 - Format: `Name / Designation (Organisation)`
 - Examples:
-  - Raymond Chua / Chief Executive (Health Sciences Authority)
-  - Yeo Yong Kiat / Deputy Director (GovTech)
+  - Alex Tan / Chief Executive (Agency for Digital Services)
+  - Jordan Lee / Deputy Director (Ministry of Finance)
 
 **Abbreviation rule:** Because attendees' full names, designations, and orgs are stated here, the body of the NOMs can use abbreviations: `Designation/Org`. For example:
-- CE/HSA (refers to Raymond Chua)
-- DD/GovTech (refers to Yeo Yong Kiat)
+- CE/ADS (refers to Alex Tan)
+- DD/MOF (refers to Jordan Lee)
 
 ### 4. Contents
 
@@ -93,7 +93,7 @@ Before the body table, include a simple contents list showing topics and sub-top
 - Continue until main topic is exhausted
 
 **For Action column rules:**
-- Action items must be clear from the language in the Notes column (e.g., "CE/HSA would follow up with...", "DD/GovTech to circulate...")
+- Action items must be clear from the language in the Notes column (e.g., "CE/ADS would follow up with...", "DD/MOF to circulate...")
 - The For Action column states who is responsible - aligned to the specific bullet point where the action appears
 - Can be a person, team, or organisation
 
@@ -101,26 +101,26 @@ Before the body table, include a simple contents list showing topics and sub-top
 
 ## Example
 
-**Title:** Discussion on HSA Digital Transformation Role
+**Title:** Rollout of the Community Grants Portal
 
-**Date:** 27 January 2026
+**Date:** 15 March 2026
 
 **Attendees:**
-- Raymond Chua / Chief Executive (Health Sciences Authority)
-- Yeo Yong Kiat / Deputy Director (GovTech)
+- Alex Tan / Chief Executive (Agency for Digital Services)
+- Jordan Lee / Deputy Director (Ministry of Finance)
 
 **Contents**
-1. Yong Kiat's Concerns
-   - *Job Scope Issues*
-   - *Progression Issues*
-2. New Role Proposal
+1. Portal Readiness
+   - *System Testing*
+   - *Onboarding Timeline*
+2. Funding Approval
 
 | S/N | Notes | For Action |
 |-----|-------|------------|
-| 1 | Yong Kiat's Concerns ||
-|   | *Job Scope Issues*<br><br>a. DD/GovTech explained that he wanted a role with concrete levers to effect change, rather than an advisory position.<br><br>b. CE/HSA acknowledged this and noted that the original corporate office role had resourcing constraints.<br><br>*Progression Issues*<br><br>a. DD/GovTech highlighted that JR10 would be a demotion from his current grade.<br><br>b. CE/HSA confirmed he would work to upgrade the post to JR9. | |
-| 2 | New Role Proposal ||
-|   | a. CE/HSA proposed a Director-level position for the Front-End Regulatory Services Office.<br><br>b. CE/HSA explained that the role would consolidate all stakeholder-facing regulatory functions.<br><br>c. DD/GovTech to consider the offer and revert. | DD/GovTech |
+| 1 | Portal Readiness ||
+|   | *System Testing*<br><br>a. DD/MOF reported that user acceptance testing was complete, with no critical defects outstanding.<br><br>b. CE/ADS noted that two minor issues remained and would be resolved before launch.<br><br>*Onboarding Timeline*<br><br>a. DD/MOF proposed a phased onboarding beginning with pilot agencies.<br><br>b. CE/ADS agreed and asked for a detailed schedule. | |
+| 2 | Funding Approval ||
+|   | a. CE/ADS confirmed the platform budget had been approved for the financial year.<br><br>b. DD/MOF to circulate the finalised cost breakdown to stakeholders. | DD/MOF |
 
 ---
 
