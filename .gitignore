@@ -2,3 +2,6 @@
 BRAIN.md
 *.docx
 .DS_Store
+
+# Local drift-detection cache — machine-local baseline, not shared
+.brain-state.json
