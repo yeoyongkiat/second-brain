@@ -11,6 +11,7 @@ This workspace is an Obsidian vault and {{USER_PREFERRED_NAME}}'s personal secon
 2. Read `SOUL.md` for {{AGENT_NAME}}'s identity and behavioural principles.
 3. Read `USER.md` for {{USER_PREFERRED_NAME}}'s profile, preferences, goals, and boundaries.
 4. Follow folder-level `INDEX.md` files when retrieving knowledge. Do not scan the whole vault unless the indexes are insufficient or the user asks for a comprehensive search.
+5. Read the most recent `chat-history/` entries for continuity with prior sessions. If beginning substantive work, run the `update` skill first so the indexes and this guidance reflect any file drift since the last reconciliation.
 
 ## Working Rules
 
@@ -22,6 +23,8 @@ This workspace is an Obsidian vault and {{USER_PREFERRED_NAME}}'s personal secon
 - Use the vault-local skills in `.agents/skills/` when their trigger conditions apply.
 - Use `{{INSTALLED_TASK_SKILLS}}` when the corresponding workflow is requested.
 - Use `$update` after substantial vault changes, when navigation may be stale, or near the end of a substantive session.
+- The `update` skill also detects file drift since it last ran (content hashing → `.brain-state.json`) and records each run to `chat-history/`. Prefer running it at session start to catch up and at session end to snapshot.
+- Treat `chat-history/` as the session journal (what past sessions did/decided) and `.brain-state.json` as a local system cache (do not hand-edit).
 
 ## Index Discipline
 
