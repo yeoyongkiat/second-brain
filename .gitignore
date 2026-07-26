@@ -5,3 +5,8 @@ BRAIN.md
 
 # Local drift-detection cache — machine-local baseline, not shared
 .brain-state.json
+
+# Installed-vault artifacts — this repo is the clean installer package, not an instance
+CLAUDE.md
+chat-history/
+docs/
