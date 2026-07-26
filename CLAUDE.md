@@ -9,6 +9,7 @@ The vault currently holds a research corpus on **Raymond Chua** (Chief Executive
 1. Read `INDEX.md` — the vault navigation entry point (root map of knowledge files and folders).
 2. From `INDEX.md`, follow the relevant folder-level `INDEX.md` before scanning that folder's contents; continue through nested indexes until the likely source files are found.
 3. For "who is Raymond Chua / what does he do", start at `PROFILE.md`. For his speech craft, policy lexicon, and vision for HSA, start at `SPEECH.md`.
+4. Read the latest `chat-history/` entries for continuity with prior sessions. If you are starting substantive work, run `/update` first to catch up on any file drift since the last reconciliation.
 
 > This vault has no `SOUL.md` (agent identity) or `USER.md` (user profile) — it is a research corpus rather than a personal-identity brain. If either is added later, read it at session start too.
 
@@ -18,7 +19,7 @@ The vault currently holds a research corpus on **Raymond Chua** (Chief Executive
 - Preserve existing user content and inspect files before replacing or restructuring them.
 - Navigate through the `INDEX.md` tree; do not scan the whole vault unless the indexes are insufficient or the user asks for a comprehensive search.
 - Use the vault-local skills in `.claude/skills/` when their trigger conditions apply:
-  - `/update` — reconcile the entire `INDEX.md` tree and refresh this guidance file after vault changes.
+  - `/update` — reconcile the entire `INDEX.md` tree and refresh this guidance file, **detect file drift since the last run** (content hashing → `.brain-state.json`), and **journal the session** to `chat-history/`. Run after vault changes, at session start to catch up, or near the end of a substantive session.
   - `/write-noms` — turn transcripts, meeting notes, or recordings into Singapore-government-style Notes of Meeting (portable source: root `write-noms.md`).
 - Run `/update` after substantial vault changes, when navigation may be stale, or near the end of a substantive session.
 
